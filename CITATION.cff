@@ -1,0 +1,61 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it and the underlying works below."
+title: "multimodal-retrieval-benchmark: Zero-Shot Cross-Modal Retrieval with CLIP"
+authors:
+  - name: "Adnan Hassnain"
+date-released: 2026-07-09
+license: MIT
+references:
+  - type: article
+    authors:
+      - family-names: Radford
+        given-names: Alec
+      - family-names: Kim
+        given-names: Jong Wook
+      - family-names: Hallacy
+        given-names: Chris
+      - family-names: Ramesh
+        given-names: Aditya
+      - family-names: Goh
+        given-names: Gabriel
+      - family-names: Agarwal
+        given-names: Sandhini
+      - family-names: Sastry
+        given-names: Girish
+      - family-names: Askell
+        given-names: Amanda
+      - family-names: Mishkin
+        given-names: Pamela
+      - family-names: Clark
+        given-names: Jack
+      - family-names: Krueger
+        given-names: Gretchen
+      - family-names: Sutskever
+        given-names: Ilya
+    title: "Learning Transferable Visual Models From Natural Language Supervision"
+    year: 2021
+    journal: "Proceedings of the 38th International Conference on Machine Learning (ICML)"
+  - type: article
+    authors:
+      - family-names: Young
+        given-names: Peter
+      - family-names: Lai
+        given-names: Alice
+      - family-names: Hodosh
+        given-names: Micah
+      - family-names: Hockenmaier
+        given-names: Julia
+    title: "From Image Descriptions to Visual Denotations: New Similarity Metrics for Semantic Inference over Event Descriptions"
+    year: 2014
+    journal: "Transactions of the Association for Computational Linguistics"
+  - type: conference-paper
+    authors:
+      - family-names: Johnson
+        given-names: Jeff
+      - family-names: Douze
+        given-names: Matthijs
+      - family-names: Jégou
+        given-names: Hervé
+    title: "Billion-scale similarity search with GPUs"
+    year: 2019
+    collection-title: "IEEE Transactions on Big Data"

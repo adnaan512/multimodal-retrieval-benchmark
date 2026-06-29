@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.cache/
+*.npy
+report.html
+examples/demo_report.html
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.venv/
+venv/
+.DS_Store
