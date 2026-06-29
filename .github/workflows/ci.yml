@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # CI intentionally runs in mock mode only: numpy is the only real
+      # dependency needed to exercise the full pipeline. torch/transformers
+      # (and any Flickr30K/CLIP-weight downloads) are NOT installed here,
+      # keeping CI fast and network-independent. See MockCLIPEncoder in
+      # src/backbone/clip_encoder.py.
+      - name: Install minimal test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pytest flake8 pytest-cov
+
+      - name: Lint with flake8
+        run: |
+          flake8 src/ main.py tests/ examples/ --max-line-length=130 --extend-ignore=E203,W503 --exclude=notebooks
+
+      - name: Run unit tests (mock mode, no downloads)
+        run: |
+          pytest tests/ -v --cov=src --cov-report=term-missing
+
+      - name: Run offline demo end-to-end
+        run: |
+          python examples/run_demo.py
+          test -f examples/demo_report.html
