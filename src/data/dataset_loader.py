@@ -57,15 +57,29 @@ def load_flickr30k_test_split(data_dir: str, split_size: int = TEST_SPLIT_SIZE,
     split file.
     """
     token_path = os.path.join(data_dir, TOKEN_FILE)
-    image_dir = os.path.join(data_dir, IMAGE_DIR)
     if not os.path.isfile(token_path):
         raise FileNotFoundError(
             f"Caption file not found: {token_path}. Download the dataset from "
             "https://www.kaggle.com/datasets/adityajn105/flickr30k and point "
             "--data-dir at the extracted folder."
         )
-    if not os.path.isdir(image_dir):
-        raise FileNotFoundError(f"Image directory not found: {image_dir}")
+
+    possible_image_dirs = [
+        "flickr30k-images",
+        "Images",
+        "images",
+        "flickr30k_images",
+        "images/flickr30k_images",
+        "Images/flickr30k_images"
+    ]
+    image_dir = None
+    for d in possible_image_dirs:
+        if os.path.isdir(os.path.join(data_dir, d)):
+            image_dir = os.path.join(data_dir, d)
+            break
+            
+    if not image_dir:
+        raise FileNotFoundError(f"Image directory not found in {data_dir}. Expected one of {possible_image_dirs}")
 
     captions_by_image = _parse_token_file(token_path)
     image_ids = sorted(captions_by_image.keys())
