@@ -12,7 +12,7 @@ Instead of simply reporting top-level accuracy, this project systematically brea
 
 ---
 
-## 📊 Benchmark Results (Flickr30K)
+##  Benchmark Results (Flickr30K)
 *Computed across 1,000 images and 5,000 captions on Kaggle (T4 GPU).*
 
 ### Recall Metrics & Backbone Comparison
@@ -45,7 +45,7 @@ Applying our training-free hard-negative penalty reranking dramatically improves
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 git clone https://github.com/adnaan512/multimodal-retrieval-benchmark.git
@@ -53,22 +53,22 @@ cd multimodal-retrieval-benchmark
 pip install -r requirements.txt
 ```
 
-**Option 1 — Kaggle (Recommended for full dataset processing):**
+**Option 1  Kaggle (Recommended for full dataset processing):**
 * Run directly in your browser with a free GPU: [Kaggle Notebook](https://www.kaggle.com/code/adnanhassnain/multimodal-retrieval-benchmark)
 
-**Option 2 — Local CPU (Standard 1K split):**
+**Option 2 Local CPU (Standard 1K split):**
 ```bash
 python main.py --mode local --data-dir ./flickr30k
 ```
 
-**Option 3 — Offline Demo (Mock data for testing):**
+**Option 3  Offline Demo (Mock data for testing):**
 ```bash
 python examples/run_demo.py
 ```
 
 ---
 
-## 🏗 Architecture & Design Decisions
+## Architecture & Design Decisions
 
 ```
                  ┌─────────────────────┐
@@ -108,7 +108,7 @@ python examples/run_demo.py
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 multimodal-retrieval-benchmark/
@@ -126,4 +126,4 @@ multimodal-retrieval-benchmark/
 ```
 
 ## Author
-Adnan Hassnain — BS CS, NUST Pakistan
+Adnan Hassnain  BS CS, NUST Pakistan
