@@ -85,6 +85,11 @@ class CLIPEncoder:
             inputs = self.processor(images=list(chunk), return_tensors="pt").to(self.device)
             with self.torch.no_grad():
                 feats = self.model.get_image_features(**inputs)
+            
+            # Handle newer transformers versions returning BaseModelOutputWithPooling
+            if not isinstance(feats, self.torch.Tensor):
+                feats = getattr(feats, "image_embeds", getattr(feats, "pooler_output", feats[0]))
+
             out.append(feats.cpu().numpy())
         arr = np.concatenate(out, axis=0)
         return _l2_normalize(arr)
@@ -97,6 +102,11 @@ class CLIPEncoder:
                                      padding=True, truncation=True).to(self.device)
             with self.torch.no_grad():
                 feats = self.model.get_text_features(**inputs)
+            
+            # Handle newer transformers versions returning BaseModelOutputWithPooling
+            if not isinstance(feats, self.torch.Tensor):
+                feats = getattr(feats, "text_embeds", getattr(feats, "pooler_output", feats[0]))
+
             out.append(feats.cpu().numpy())
         arr = np.concatenate(out, axis=0)
         return _l2_normalize(arr)
