@@ -33,15 +33,58 @@ class Sample:
 
 
 def _parse_token_file(token_path: str) -> dict:
-    """Parse results_20130124.token into {image_id: [captions...]}."""
+    """Parse results_20130124.token or captions.txt into {image_id: [captions...]}."""
     captions_by_image: dict = {}
+    
+    is_csv_format = token_path.endswith(".txt") or token_path.endswith(".csv")
+    if is_csv_format:
+        import csv
+        with open(token_path, "r", encoding="utf-8") as f:
+            header = f.readline().strip()
+            delimiter = "|" if "|" in header else ","
+            f.seek(0)
+            
+            reader = csv.reader(f, delimiter=delimiter)
+            # check if first row is header
+            first_row = next(reader, None)
+            if first_row and not (first_row[0].endswith('.jpg') or first_row[0].endswith('.png')):
+                # It was a header, skip it
+                pass
+            else:
+                # It wasn't a header, process it
+                if first_row and len(first_row) >= 2:
+                    image_id = first_row[0].strip()
+                    caption = first_row[-1].strip()
+                    captions_by_image.setdefault(image_id, []).append(caption)
+
+            for row in reader:
+                if len(row) >= 2:
+                    image_id = row[0].strip()
+                    caption = row[-1].strip()  # the comment is usually the last column
+                    captions_by_image.setdefault(image_id, []).append(caption)
+        
+        if len(captions_by_image) > 0:
+            return captions_by_image
+
+    # Original parsing logic for results_20130124.token
     with open(token_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.rstrip("\n")
             if not line:
                 continue
-            key, caption = line.split("\t", 1)
-            image_id = key.split("#")[0]
+            if "\t" in line:
+                key, caption = line.split("\t", 1)
+                image_id = key.split("#")[0]
+            else:
+                parts = line.split(" ", 1)
+                if len(parts) == 2 and "#" in parts[0]:
+                    image_id = parts[0].split("#")[0]
+                    caption = parts[1]
+                elif len(parts) == 2 and "," in parts[0]:
+                    image_id = parts[0].split(",")[0]
+                    caption = parts[1]
+                else:
+                    continue
             captions_by_image.setdefault(image_id, []).append(caption)
     return captions_by_image
 
@@ -56,12 +99,22 @@ def load_flickr30k_test_split(data_dir: str, split_size: int = TEST_SPLIT_SIZE,
     seeded shuffle) since the Kaggle mirror does not ship an official
     split file.
     """
-    token_path = os.path.join(data_dir, TOKEN_FILE)
-    if not os.path.isfile(token_path):
+    possible_token_files = [
+        os.path.join(data_dir, "results_20130124.token"),
+        os.path.join(data_dir, "captions.txt"),
+        os.path.join(data_dir, "captions.csv"),
+        os.path.join(data_dir, "images", "captions.txt"),
+        os.path.join(data_dir, "Images", "captions.txt"),
+    ]
+    token_path = None
+    for p in possible_token_files:
+        if os.path.isfile(p):
+            token_path = p
+            break
+            
+    if not token_path:
         raise FileNotFoundError(
-            f"Caption file not found: {token_path}. Download the dataset from "
-            "https://www.kaggle.com/datasets/adityajn105/flickr30k and point "
-            "--data-dir at the extracted folder."
+            f"Caption file not found in {data_dir}. Looked for results_20130124.token or captions.txt."
         )
 
     possible_image_dirs = [
