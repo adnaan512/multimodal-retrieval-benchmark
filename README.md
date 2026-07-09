@@ -32,6 +32,40 @@ of that gap.
 | RQ2 | Which query categories (object-centric, scene-centric, attribute-centric, spatial-relation) show the largest retrieval gaps? |
 | RQ3 | Do retrieval failures cluster by semantic category — and can hard negative mining improve Recall@1 without any fine-tuning? |
 
+## Benchmark Results (Flickr30K)
+
+*These results were computed across 1,000 images and 5,000 captions on Kaggle (T4 GPU).*
+
+### Recall Metrics & Backbone Comparison (RQ1)
+
+| Direction | Backbone | N | R@1 | R@5 | R@10 | Median Rank |
+|-----------|----------|---|-----|-----|------|-------------|
+| Text $\rightarrow$ Image | ViT-B/32 | 5000 | 59.36% | 84.20% | 90.76% | 1.0 |
+| Image $\rightarrow$ Text | ViT-B/32 | 1000 | 80.50% | 94.90% | 97.40% | 1.0 |
+| Text $\rightarrow$ Image | **ViT-L/14** | 5000 | **66.28%** | **88.22%** | **93.08%** | 1.0 |
+| Image $\rightarrow$ Text | **ViT-L/14** | 1000 | **87.10%** | **97.90%** | **99.00%** | 1.0 |
+
+### Query Category Breakdown (RQ2)
+
+*Which kinds of captions confuse the zero-shot model the most?*
+
+| Query Category | N | Failure Rate |
+|----------------|---|--------------|
+| **scene_centric** (high failure) | 377 | 41.9% |
+| object_centric | 2387 | 36.9% |
+| attribute_centric | 1754 | 29.3% |
+| spatial_relation | 482 | 27.8% |
+
+**Key Finding:** `scene_centric` queries fail the most often (41.9%), occurring at 1.5x the rate of `spatial_relation` queries (27.8%). This highlights that highly overlapping global visual contexts (e.g., "people in a park") are much harder for contrastive bag-of-words models to differentiate than localized relational attributes.
+
+### Hard Negative Reranking Impact (RQ3)
+
+Applying our training-free hard-negative penalty reranking dramatically improves retrieval:
+
+| Stage | Recall@1 (Text $\rightarrow$ Image) |
+|-------|------------------------------------|
+| Before Reranking | 66.28% |
+| **After Hard-Negative Reranking** | **71.94%** |
 ## Architecture
 
 ```
