@@ -123,7 +123,7 @@ python examples/run_demo.py
 python main.py --mode local --data-dir ./flickr30k
 
 # Option 3 — Full Flickr30K, both backbones (Kaggle recommended, T4 GPU):
-# See notebooks/flickr30k_benchmark.ipynb
+# Run directly in browser: https://www.kaggle.com/code/adnanhassnain/multimodal-retrieval-benchmark
 ```
 
 `main.py` also supports `--backbone {vit-b-32,vit-l-14}`,
