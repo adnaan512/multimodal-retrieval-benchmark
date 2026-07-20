@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # Multimodal Retrieval Benchmark
 ### Zero-Shot Cross-Modal Retrieval with CLIP on Flickr30K
@@ -265,4 +265,3 @@ The Flickr30K dataset is provided by Young et al. (2014). CLIP model weights are
 ## License
 
 This project is released under the [MIT License](LICENSE). The Flickr30K dataset and CLIP model weights are subject to their respective licences; please consult their original sources before redistribution.
-]]>
