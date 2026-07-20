@@ -98,44 +98,7 @@ python main.py --dry-run --mode local --data-dir ./flickr30k --backbone vit-l-14
 
 ## Architecture
 
-```
-                 ┌─────────────────────┐
-                 │   Flickr30K Dataset  │
-                 │  (1 000-image split) │
-                 └──────────┬───────────┘
-                            │ image paths + captions
-                 ┌──────────▼───────────┐
-                 │  CLIP Encoder (frozen)│  ← No fine-tuning (see §Design)
-                 │  ViT-B/32 | ViT-L/14 │
-                 └──────┬──────────┬─────┘
-          image branch  │          │  text branch
-               ┌────────▼──────┐  ┌──────▼────────┐
-               │  Image Index  │  │  Text Index   │
-               │  (N × 512)    │  │  (N×5 × 512)  │
-               │  L2-normalised│  │  L2-normalised│
-               └────────┬──────┘  └──────┬────────┘
-                        │   cosine similarity
-        ┌───────────────▼─────────────────▼──────────────┐
-        │              Top-K Retrieval                    │
-        │  (matrix multiply = dot product on L2 vectors)  │
-        └───────────────────────┬─────────────────────────┘
-                                ▼
-        ┌─────────────────────────────────────────────────┐
-        │  Query Categorizer + Evaluator (Recall@K)       │
-        │  4 categories: object / scene / attribute /     │
-        │  spatial — checked in priority order            │
-        └───────────────────────┬─────────────────────────┘
-                                ▼
-        ┌─────────────────────────────────────────────────┐
-        │     Hard-Negative Reranking (training-free)     │
-        │  Penalises globally-frequent wrong predictions  │
-        └───────────────────────┬─────────────────────────┘
-                                ▼
-        ┌─────────────────────────────────────────────────┐
-        │         Self-Contained HTML Report              │
-        │  Metrics · Category breakdown · Failure cases   │
-        └─────────────────────────────────────────────────┘
-```
+![Architecture Diagram](docs/architecture.png)
 
 ### Design Decisions
 
