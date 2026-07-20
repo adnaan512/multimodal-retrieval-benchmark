@@ -15,7 +15,7 @@
 
 ## Abstract
 
-We present a systematic zero-shot cross-modal retrieval benchmark evaluating OpenAI's CLIP models (ViT-B/32 and ViT-L/14) on the Flickr30K dataset. Beyond top-level accuracy, this work investigates *where and why* retrieval fails by categorising text queries into four semantic buckets — **object-centric**, **scene-centric**, **attribute-centric**, and **spatial-relation** — and measuring per-category failure rates. We find that scene-centric queries fail at **41.9%**, representing a 1.5× higher failure rate than spatial-relation queries (27.8%), contrary to the intuition that spatial relations should be hardest. We further propose a **training-free hard-negative reranking** algorithm that lifts Recall@1 from 66.28% to **71.94%** (+5.66 pp) without modifying CLIP's weights.
+We present a zero-shot cross-modal retrieval benchmark evaluating OpenAI's CLIP on Flickr30K. By categorising text queries into semantic buckets, we investigate retrieval failure modes and find that scene-centric queries fail significantly more often than spatial-relation ones. Finally, we propose a training-free hard-negative reranking algorithm that improves Recall@1 from 66.28% to 71.94%.
 
 ---
 
@@ -96,9 +96,9 @@ python main.py --dry-run --mode local --data-dir ./flickr30k --backbone vit-l-14
 
 ---
 
-## Architecture
+## Pipeline
 
-![Architecture Diagram](docs/architecture.png)
+![Pipeline Picture](docs/architecture.png)
 
 ### Design Decisions
 
@@ -116,37 +116,12 @@ python main.py --dry-run --mode local --data-dir ./flickr30k --backbone vit-l-14
 
 ```
 multimodal-retrieval-benchmark/
-├── main.py                              # CLI entry point (--mode, --backbone, --compare-backbones)
-├── pyproject.toml                       # Installable package config (pip install -e .)
-├── requirements.txt                     # Runtime dependencies
-├── requirements-dev.txt                 # Dev/lint/test dependencies
-├── CITATION.cff                         # Machine-readable citation metadata
-├── CHANGELOG.md                         # Version history
-├── CONTRIBUTING.md                      # Contribution guide
-├── src/
-│   ├── models.py                        # Core dataclasses: RetrievalResult, RecallMetrics, …
-│   ├── data/dataset_loader.py           # Flickr30K loader + synthetic mock dataset
-│   ├── backbone/clip_encoder.py         # CLIPEncoder (HuggingFace) + MockCLIPEncoder
-│   ├── indexing/embedding_index.py      # Caching, L2-norm matrices, retrieve_batch()
-│   ├── retrieval/
-│   │   ├── text_to_image.py             # Caption → Image search
-│   │   ├── image_to_text.py             # Image → Caption search
-│   │   └── hard_negative_reranking.py   # Training-free reranking (RQ3)
-│   ├── analysis/
-│   │   ├── query_categorizer.py         # Rule-based caption → category assignment
-│   │   └── failure_analyzer.py          # Failure rate by category, hardest queries
-│   ├── benchmark/evaluator.py           # Recall@K, median rank, per-category aggregation
-│   └── reporting/report_generator.py    # Self-contained HTML dashboard
-├── tests/                               # Pytest suite (mock mode, no downloads)
-│   ├── test_clip_encoder.py
-│   └── test_retrieval_metrics.py
-├── notebooks/
-│   └── flickr30k_benchmark.ipynb        # Kaggle-ready notebook (T4 GPU)
-├── examples/
-│   └── run_demo.py                      # Offline end-to-end demo
-└── docs/
-    ├── RESEARCH.md                      # Full methodology & statistical notes
-    └── ARCHITECTURE.md                  # Module-level design documentation
+├── main.py                    # CLI entry point
+├── src/                       # Core pipeline code (data, encoder, index, retrieval, analysis)
+├── tests/                     # Pytest suite
+├── notebooks/                 # Kaggle-ready GPU notebooks
+├── examples/                  # Offline demos
+└── docs/                      # Research methodology & architecture docs
 ```
 
 ---
