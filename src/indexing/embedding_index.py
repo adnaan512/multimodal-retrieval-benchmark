@@ -41,9 +41,14 @@ def load_index(path: str) -> np.ndarray:
     return np.load(path)
 
 
-def load_or_build_indices(encoder, image_identifiers: Sequence[str], captions: Sequence[str],
-                           cache_dir: str, is_mock: bool,
-                           force_rebuild: bool = False) -> Tuple[np.ndarray, np.ndarray]:
+def load_or_build_indices(
+    encoder,
+    image_identifiers: Sequence[str],
+    captions: Sequence[str],
+    cache_dir: str,
+    is_mock: bool,
+    force_rebuild: bool = False,
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Core caching pattern used throughout the project: never recompute
     embeddings if a cached .npy already exists on disk for this

@@ -11,8 +11,12 @@ from src.indexing.embedding_index import retrieve_batch
 from src.models import RetrievalResult
 
 
-def run_text_to_image(text_embeddings, image_embeddings,
-                       caption_to_image_index: Sequence[int], k: int = 10) -> List[RetrievalResult]:
+def run_text_to_image(
+    text_embeddings,
+    image_embeddings,
+    caption_to_image_index: Sequence[int],
+    k: int = 10,
+) -> List[RetrievalResult]:
     """
     text_embeddings: (Q, 512) matrix, one row per caption (Q = N_images * 5)
     image_embeddings: (N, 512) matrix, one row per image

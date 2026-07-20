@@ -1,10 +1,36 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it and the underlying works below."
-title: "multimodal-retrieval-benchmark: Zero-Shot Cross-Modal Retrieval with CLIP"
-authors:
-  - name: "Adnan Hassnain"
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "Multimodal Retrieval Benchmark: Zero-Shot Cross-Modal Retrieval with CLIP"
+version: "1.0.0"
 date-released: 2026-07-09
 license: MIT
+url: "https://github.com/adnaan512/multimodal-retrieval-benchmark"
+repository-code: "https://github.com/adnaan512/multimodal-retrieval-benchmark"
+abstract: >
+  A systematic zero-shot cross-modal retrieval benchmark evaluating OpenAI's
+  CLIP models (ViT-B/32 and ViT-L/14) on the Flickr30K dataset. The project
+  investigates per-category linguistic failure modes across four query types
+  (object-centric, scene-centric, attribute-centric, spatial-relation) and
+  proposes a training-free hard-negative reranking algorithm that improves
+  Recall@1 from 66.28% to 71.94% without modifying CLIP's weights.
+keywords:
+  - multimodal retrieval
+  - cross-modal retrieval
+  - CLIP
+  - zero-shot learning
+  - image-text retrieval
+  - Flickr30K
+  - contrastive learning
+  - hard negative mining
+  - recall metrics
+  - computer vision
+  - natural language processing
+authors:
+  - family-names: "Hassnain"
+    given-names: "Adnan"
+    alias: "adnaan512"
+    affiliation: "NUST Pakistan"
 references:
   - type: article
     authors:
@@ -48,14 +74,27 @@ references:
     title: "From Image Descriptions to Visual Denotations: New Similarity Metrics for Semantic Inference over Event Descriptions"
     year: 2014
     journal: "Transactions of the Association for Computational Linguistics"
+  - type: article
+    authors:
+      - family-names: Faghri
+        given-names: Fartash
+      - family-names: Fleet
+        given-names: David J.
+      - family-names: Kiros
+        given-names: Jamie Ryan
+      - family-names: Fidler
+        given-names: Sanja
+    title: "VSE++: Improving Visual-Semantic Embeddings with Hard Negatives"
+    year: 2018
+    journal: "British Machine Vision Conference (BMVC)"
   - type: conference-paper
     authors:
       - family-names: Johnson
         given-names: Jeff
       - family-names: Douze
         given-names: Matthijs
-      - family-names: Jégou
-        given-names: Hervé
+      - family-names: "Jégou"
+        given-names: "Hervé"
     title: "Billion-scale similarity search with GPUs"
     year: 2019
     collection-title: "IEEE Transactions on Big Data"

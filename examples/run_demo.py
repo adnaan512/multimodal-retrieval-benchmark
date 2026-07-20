@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from main import main as run_main
+from main import main as run_main  # noqa: E402
 
 if __name__ == "__main__":
     sys.exit(run_main(["--mode", "demo", "--output", "examples/demo_report.html"]))

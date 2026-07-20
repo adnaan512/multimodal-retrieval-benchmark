@@ -22,14 +22,18 @@ from typing import List
 
 from src.models import QueryAnalysis
 
-_OBJECT_PATTERN = re.compile(r"\b(a|an|the)\s+\w+\s+(is|are|sits|sitting|stands|standing|runs|running)\b",
-                              re.IGNORECASE)
+_OBJECT_PATTERN = re.compile(
+    r"\b(a|an|the)\s+\w+\s+(is|are|sits|sitting|stands|standing|runs|running)\b",
+    re.IGNORECASE,
+)
 
 _SCENE_WORDS = ["park", "street", "beach", "kitchen", "forest", "stadium", "office", "garden", "field", "city"]
 _ATTR_WORDS = ["red", "blue", "green", "yellow", "black", "white", "tall", "small", "large",
                "young", "old", "big", "little"]
-_SPATIAL_PHRASES = ["next to", "in front of", "behind", "on top of", "beside", "to the left of",
-                     "to the right of"]
+_SPATIAL_PHRASES = [
+    "next to", "in front of", "behind", "on top of", "beside",
+    "to the left of", "to the right of",
+]
 
 CATEGORIES = ("spatial_relation", "attribute_centric", "scene_centric", "object_centric")
 

@@ -1,13 +1,40 @@
 __pycache__/
 *.pyc
+*.pyo
+
+# Embedding caches and generated reports
 .cache/
 *.npy
 report.html
 examples/demo_report.html
+results/
+
+# Test & coverage
 .pytest_cache/
 .coverage
 htmlcov/
+.mypy_cache/
+
+# Build / packaging
 *.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
 .venv/
 venv/
+env/
+
+# Dataset (large files — download separately)
+flickr30k/
+flickr30k_images/
+*.zip
+*.tar.gz
+
+# Editor & OS artifacts
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.env

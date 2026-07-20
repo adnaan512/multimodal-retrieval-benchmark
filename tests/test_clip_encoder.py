@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.backbone.clip_encoder import EMBED_DIM, MockCLIPEncoder
+from src.backbone.clip_encoder import EMBED_DIM, MockCLIPEncoder  # noqa: E402
 
 
 @pytest.fixture

@@ -15,17 +15,19 @@ import os
 import sys
 import time
 
-from src.analysis.failure_analyzer import (failure_rate_by_category,
-                                            find_failures, hardest_queries,
-                                            semantic_failure_summary)
+from src.analysis.failure_analyzer import (
+    failure_rate_by_category,
+    find_failures,
+    hardest_queries,
+    semantic_failure_summary,
+)
 from src.analysis.query_categorizer import categorize_captions
 from src.backbone.clip_encoder import build_encoder
 from src.benchmark.evaluator import evaluate
 from src.data.dataset_loader import build_mock_dataset, load_flickr30k_test_split
 from src.indexing.embedding_index import load_or_build_indices
 from src.reporting.report_generator import generate_report
-from src.retrieval.hard_negative_reranking import (compute_hard_negative_frequencies,
-                                                    rerank_with_hard_negatives)
+from src.retrieval.hard_negative_reranking import rerank_with_hard_negatives
 from src.retrieval.image_to_text import run_image_to_text
 from src.retrieval.text_to_image import run_text_to_image
 
@@ -35,20 +37,30 @@ def build_parser() -> argparse.ArgumentParser:
         prog="main.py",
         description="Zero-shot cross-modal retrieval benchmark using CLIP on Flickr30K.",
     )
-    p.add_argument("--mode", choices=["demo", "local"], default="demo",
-                    help="'demo' runs on a 50-item synthetic mock dataset (no downloads). "
-                         "'local' runs on the real Flickr30K test split (requires --data-dir).")
-    p.add_argument("--data-dir", type=str, default=None,
-                    help="Path to extracted Flickr30K dataset (required for --mode local).")
-    p.add_argument("--backbone", choices=["vit-b-32", "vit-l-14"], default="vit-b-32",
-                    help="CLIP backbone to use (ignored in demo mode, which always uses the mock encoder).")
-    p.add_argument("--compare-backbones", action="store_true",
-                    help="Run both vit-b-32 and vit-l-14 and compare (local mode only).")
+    p.add_argument(
+        "--mode", choices=["demo", "local"], default="demo",
+        help="'demo' runs on a 50-item synthetic mock dataset (no downloads). "
+             "'local' runs on the real Flickr30K test split (requires --data-dir).",
+    )
+    p.add_argument(
+        "--data-dir", type=str, default=None,
+        help="Path to extracted Flickr30K dataset (required for --mode local).",
+    )
+    p.add_argument(
+        "--backbone", choices=["vit-b-32", "vit-l-14"], default="vit-b-32",
+        help="CLIP backbone to use (ignored in demo mode, which always uses the mock encoder).",
+    )
+    p.add_argument(
+        "--compare-backbones", action="store_true",
+        help="Run both vit-b-32 and vit-l-14 and compare (local mode only).",
+    )
     p.add_argument("--k", type=int, default=10, help="Top-K for retrieval / Recall@K.")
     p.add_argument("--cache-dir", type=str, default=".cache", help="Where to cache embeddings.")
     p.add_argument("--output", type=str, default="report.html", help="Path to write the HTML report.")
-    p.add_argument("--dry-run", action="store_true",
-                    help="Validate config and print the planned run without computing anything.")
+    p.add_argument(
+        "--dry-run", action="store_true",
+        help="Validate config and print the planned run without computing anything.",
+    )
     return p
 
 
@@ -144,7 +156,7 @@ def main(argv=None) -> int:
     categories = run_state["categories"]
     t2i_results = run_state["t2i_results"]
     per_category = failure_rate_by_category(t2i_results, categories, k=1)
-    failures = find_failures(t2i_results, categories, k=args.k)
+    _ = find_failures(t2i_results, categories, k=args.k)  # reserved for future reporting use
     top_failures = hardest_queries(t2i_results, categories, top_n=5)
     finding = semantic_failure_summary(per_category)
     print(f"[main] {finding}")

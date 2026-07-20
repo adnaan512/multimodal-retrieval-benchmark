@@ -1,4 +1,6 @@
--r requirements.txt
-pytest>=7.4.0
-flake8>=6.1.0
-pytest-cov>=4.1.0
+pytest>=7.4
+pytest-cov>=4.1
+flake8>=6.1
+black>=24.0
+isort>=5.13
+mypy>=1.8

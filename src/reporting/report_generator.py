@@ -9,7 +9,7 @@ import html
 import os
 from typing import Dict, List, Optional
 
-from src.models import FailureCase, RecallMetrics
+from src.models import FailureCase
 
 _CSS = """
 :root {
@@ -55,7 +55,12 @@ code { background: #010409; padding: 2px 6px; border-radius: 4px; font-size: 13p
 
 
 def _card(label: str, value: str) -> str:
-    return f'<div class="card"><div class="label">{html.escape(label)}</div><div class="value">{html.escape(str(value))}</div></div>'
+    return (
+        f'<div class="card">'
+        f'<div class="label">{html.escape(label)}</div>'
+        f'<div class="value">{html.escape(str(value))}</div>'
+        f'</div>'
+    )
 
 
 def _metrics_table(rows: List[dict]) -> str:
@@ -72,7 +77,11 @@ def _metrics_table(rows: List[dict]) -> str:
 
 def _category_table(per_category: Dict[str, dict]) -> str:
     rows = []
-    for cat, stats in sorted(per_category.items(), key=lambda kv: kv[1].get("failure_rate", 1 - kv[1].get("r@1", 0)), reverse=True):
+    for cat, stats in sorted(
+        per_category.items(),
+        key=lambda kv: kv[1].get("failure_rate", 1 - kv[1].get("r@1", 0)),
+        reverse=True,
+    ):
         fr = stats.get("failure_rate", 1 - stats.get("r@1", 0))
         n = stats.get("total", stats.get("n", 0))
         badge = ""

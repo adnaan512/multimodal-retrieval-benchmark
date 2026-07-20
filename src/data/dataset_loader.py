@@ -17,7 +17,7 @@ import hashlib
 import os
 import random
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 
 TOKEN_FILE = "results_20130124.token"
 IMAGE_DIR = "flickr30k-images"
@@ -35,7 +35,7 @@ class Sample:
 def _parse_token_file(token_path: str) -> dict:
     """Parse results_20130124.token or captions.txt into {image_id: [captions...]}."""
     captions_by_image: dict = {}
-    
+
     is_csv_format = token_path.endswith(".txt") or token_path.endswith(".csv")
     if is_csv_format:
         import csv
@@ -43,7 +43,7 @@ def _parse_token_file(token_path: str) -> dict:
             header = f.readline().strip()
             delimiter = "|" if "|" in header else ","
             f.seek(0)
-            
+
             reader = csv.reader(f, delimiter=delimiter)
             # check if first row is header
             first_row = next(reader, None)
@@ -62,7 +62,7 @@ def _parse_token_file(token_path: str) -> dict:
                     image_id = row[0].strip()
                     caption = row[-1].strip()  # the comment is usually the last column
                     captions_by_image.setdefault(image_id, []).append(caption)
-        
+
         if len(captions_by_image) > 0:
             return captions_by_image
 
@@ -89,8 +89,9 @@ def _parse_token_file(token_path: str) -> dict:
     return captions_by_image
 
 
-def load_flickr30k_test_split(data_dir: str, split_size: int = TEST_SPLIT_SIZE,
-                               seed: int = 42) -> List[Sample]:
+def load_flickr30k_test_split(
+    data_dir: str, split_size: int = TEST_SPLIT_SIZE, seed: int = 42
+) -> List[Sample]:
     """
     Load the standard Flickr30K test split (default 1000 images).
 
@@ -111,7 +112,7 @@ def load_flickr30k_test_split(data_dir: str, split_size: int = TEST_SPLIT_SIZE,
         if os.path.isfile(p):
             token_path = p
             break
-            
+
     if not token_path:
         raise FileNotFoundError(
             f"Caption file not found in {data_dir}. Looked for results_20130124.token or captions.txt."
@@ -130,7 +131,7 @@ def load_flickr30k_test_split(data_dir: str, split_size: int = TEST_SPLIT_SIZE,
         if os.path.isdir(os.path.join(data_dir, d)):
             image_dir = os.path.join(data_dir, d)
             break
-            
+
     if not image_dir:
         raise FileNotFoundError(f"Image directory not found in {data_dir}. Expected one of {possible_image_dirs}")
 

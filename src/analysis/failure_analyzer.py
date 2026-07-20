@@ -10,8 +10,11 @@ from typing import Dict, List, Optional, Sequence
 from src.models import FailureCase, QueryAnalysis, RetrievalResult
 
 
-def find_failures(results: List[RetrievalResult], categories: Optional[Sequence[QueryAnalysis]] = None,
-                   k: int = 10) -> List[FailureCase]:
+def find_failures(
+    results: List[RetrievalResult],
+    categories: Optional[Sequence[QueryAnalysis]] = None,
+    k: int = 10,
+) -> List[FailureCase]:
     """
     A failure = ground truth not present anywhere in the top-K retrieved
     candidates. categories[i].category is used to tag failure i's query
@@ -41,8 +44,11 @@ def find_failures(results: List[RetrievalResult], categories: Optional[Sequence[
     return failures
 
 
-def failure_rate_by_category(results: List[RetrievalResult], categories: Sequence[QueryAnalysis],
-                              k: int = 1) -> Dict[str, Dict[str, float]]:
+def failure_rate_by_category(
+    results: List[RetrievalResult],
+    categories: Sequence[QueryAnalysis],
+    k: int = 1,
+) -> Dict[str, Dict[str, float]]:
     """Per-category failure rate = failures / total queries in that category."""
     totals = defaultdict(int)
     fails = defaultdict(int)
@@ -60,8 +66,11 @@ def failure_rate_by_category(results: List[RetrievalResult], categories: Sequenc
     return out
 
 
-def hardest_queries(results: List[RetrievalResult], categories: Optional[Sequence[QueryAnalysis]] = None,
-                     top_n: int = 10) -> List[FailureCase]:
+def hardest_queries(
+    results: List[RetrievalResult],
+    categories: Optional[Sequence[QueryAnalysis]] = None,
+    top_n: int = 10,
+) -> List[FailureCase]:
     """
     Rank *all* queries (not just outright failures) by similarity to their
     ground truth (approximated by the best score among ground-truth

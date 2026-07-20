@@ -6,8 +6,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.benchmark.evaluator import median_rank, recall_at_k
-from src.models import RetrievalResult
+from src.benchmark.evaluator import median_rank, recall_at_k  # noqa: E402
+from src.models import RetrievalResult  # noqa: E402
 
 
 def _make_result(retrieved, ground_truth, direction="text_to_image"):
